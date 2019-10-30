@@ -1,5 +1,6 @@
 import requests
 import json
+import time
 
 def get_flow_table_stats(switch):
     # Get flow data for specific switch from the ryu rest API
@@ -107,8 +108,8 @@ def check_mix_scan(flows):
 
 def main():
     flows = get_flow_table_stats(1)
-    for f in flows:
-        print(f + " : " + str(flows[f]))
+    #for f in flows:
+    #    print(f + " : " + str(flows[f]))
     
     horizontal = check_horizontal_scan(flows)
     vertical = check_vertical_scan(flows)
@@ -123,4 +124,8 @@ def main():
         
         
 if __name__ == '__main__':
-    main()
+    start_time = time.time()
+    while True:
+        print("tick")
+        main()
+        time.sleep(3.0)

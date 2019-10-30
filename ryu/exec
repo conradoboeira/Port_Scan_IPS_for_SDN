@@ -1,0 +1,18 @@
+curl -X POST -d '{
+    "dpid": 1,
+    "cookie": 1,
+    "cookie_mask": 1,
+    "table_id": 0,
+    "idle_timeout": 30,
+    "hard_timeout": 30,
+    "priority": 11111,
+    "flags": 1,
+    "match":{
+        "nw_src":10.0.0.11
+    },
+    "actions":[
+        {
+            "type":"OUTPUT"
+        }
+    ]
+ }' http://localhost:8080/stats/flowentry/delete
