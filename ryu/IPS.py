@@ -2,6 +2,18 @@ import requests
 import json
 import time
 
+list_of_hosts = ["10.0.0.11",
+                 "10.0.0.12",
+                 "10.0.0.13",
+                 "10.0.0.21",
+                 "10.0.0.31",
+                 "10.0.0.32",
+                 "10.0.0.33",
+                 "10.0.0.41",
+                 "10.0.0.42"
+                ]
+
+
 def get_flow_table_stats(switch):
     # Get flow data for specific switch from the ryu rest API
     data = (requests.get(url='http://localhost:8080/stats/flow/'+str(switch)).json())['1']
@@ -104,23 +116,36 @@ def check_mix_scan(flows):
                 attackers.add(host)
     return attackers
 
-
+def block_host(host, table):
+    url = "http://localhost:8080/stats/flowentry/modify"
+    
+    for dst in list_of_hosts:
+        if(dst == host): continue
+        data = '{
+                    "dpid": 1,
+                    "table_id": {},
+                    "match":{
+                        "nw_dst": {},
+                        "dl_type": 2048,
+                        "nw_src": {}
+                    }
+                }'.format(table,host, dst)
+        val = request.post(url, data=data)
 
 def main():
+    
     flows = get_flow_table_stats(1)
-    #for f in flows:
-    #    print(f + " : " + str(flows[f]))
     
     horizontal = check_horizontal_scan(flows)
     vertical = check_vertical_scan(flows)
     mixed = check_mix_scan(flows)
     attackers = horizontal.union(vertical).union(mixed)
-    deletion_url = 'http://localhost:8080/stats/flowentry/delete_strict'
+    
+    
     for attack in attackers:
         to_del = {'match' : {'nw_src' : attack}}
+        block_host(attack,1)
         print(to_del)
-        # x = requests.post(deletion_url, data='{'match': {'nw_src :' + ip}}')
-        # print(attack)                 
         
         
 if __name__ == '__main__':
