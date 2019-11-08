@@ -129,6 +129,7 @@ def block_host(host, table):
                         "nw_src": "{}"
                     }}
                 }}'''.format(table,host, dst)
+        print(data)
         val = requests.post(url, data=data)
 
 def main():
@@ -144,7 +145,7 @@ def main():
     for attack in attackers:
         to_del = {'match' : {'nw_src' : attack}}
         print(to_del)
-        block_host(attack,1)
+        block_host(attack,0)
         
         
 if __name__ == '__main__':
