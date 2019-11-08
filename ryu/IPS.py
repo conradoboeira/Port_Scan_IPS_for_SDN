@@ -93,7 +93,7 @@ def check_mix_scan(flows):
     CPS_ports = (22,23,25,3389)
     attackers = set()
     for ip in flows:
-        host_ip_acessed = {}
+        host_ip_acessed = {} 
         for match in flows[ip]:
             ip_dst = match[0]
             port_dst = match[1]
@@ -101,10 +101,10 @@ def check_mix_scan(flows):
                 if(host_ip_acessed[ip_dst]):
                     host_ip_acessed[ip_dst].add(port_dst)
                 else:
-                    host_ip_acessed[ip_dst]=set(port_dst)
+                    host_ip_acessed[ip_dst]=set([port_dst])
 
             else:
-                host_ip_acessed[ip_dst]=set(port_dst)
+                host_ip_acessed[ip_dst]=set([port_dst])
         
         if(len(host_ip_acessed) < 2):continue
         for host in host_ip_acessed:
@@ -121,16 +121,15 @@ def block_host(host, table):
     
     for dst in list_of_hosts:
         if(dst == host): continue
-        data = '{
-                    "dpid": 1,
+        data = '''{{ "dpid": 1,
                     "table_id": {},
-                    "match":{
-                        "nw_dst": {},
+                    "match":{{
+                        "nw_dst": "{}",
                         "dl_type": 2048,
-                        "nw_src": {}
-                    }
-                }'.format(table,host, dst)
-        val = request.post(url, data=data)
+                        "nw_src": "{}"
+                    }}
+                }}'''.format(table,host, dst)
+        val = requests.post(url, data=data)
 
 def main():
     
@@ -144,8 +143,8 @@ def main():
     
     for attack in attackers:
         to_del = {'match' : {'nw_src' : attack}}
-        block_host(attack,1)
         print(to_del)
+        block_host(attack,1)
         
         
 if __name__ == '__main__':
