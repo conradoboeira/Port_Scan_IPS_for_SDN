@@ -1,0 +1,15 @@
+curl -X POST -d '{
+     "dpid": 1,
+     "cookie": 0,
+     "table_id": 0,
+     "priority": 32769,
+     "flags": 1,
+     "match":{
+         "nw_src": "10.0.0.11/32",
+         "nw_dst": "10.0.0.0/24",
+         "dl_type": 2048
+     },
+     "actions":[
+     ]
+
+
