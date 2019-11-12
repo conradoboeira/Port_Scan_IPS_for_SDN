@@ -39,7 +39,7 @@ def get_flow_table_stats(switch):
         
         # Check if number of packets is smaller than threshold
         packets_restrict = packet_count <= 5
-        recent_packet = seconds_alive <= 4
+        recent_packet = seconds_alive <= 3
 
         if(packets_restrict and recent_packet):
             if(ip_src in ip_to_flow):

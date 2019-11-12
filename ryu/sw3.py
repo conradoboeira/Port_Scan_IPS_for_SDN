@@ -115,9 +115,9 @@ class SimpleSwitch13(app_manager.RyuApp):
             print("TCP")
             
             print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-            print(tcp_src)
-            print(tcp_dst)
-            # print(src_port)
+            #print(tcp_src)
+            #print(tcp_dst)
+            print(l4)
         elif pkt.get_protocol(udp.udp):
             l4 = pkt.get_protocol(udp.udp)
             src_port = l4.src_port
