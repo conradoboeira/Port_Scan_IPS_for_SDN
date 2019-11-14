@@ -117,20 +117,22 @@ def check_mix_scan(flows):
     return attackers
 
 def block_host(host, table):
-    url = "http://localhost:8080/stats/flowentry/modify"
+    url = "http://localhost:8080/stats/flowentry/add"
     
-    for dst in list_of_hosts:
-        if(dst == host): continue
-        data = '''{{ "dpid": 1,
-                    "table_id": {},
-                    "match":{{
-                        "nw_dst": "{}",
-                        "dl_type": 2048,
-                        "nw_src": "{}"
-                    }}
-                }}'''.format(table,host, dst)
-        print(data)
-        val = requests.post(url, data=data)
+    data = '''{{ 
+                "dpid": 1,
+                "cookie": 0,
+                "table_id": {},
+                "priority":32769,
+                "flags": 1,
+                "match":{{
+                    "nw_dst": "10.0.0.0/24",
+                    "dl_type": 2048,
+                    "nw_src": "{}/32"
+                }}
+            }}'''.format(table,host)
+    print(data)
+    val = requests.post(url, data=data)
 
 def main():
     

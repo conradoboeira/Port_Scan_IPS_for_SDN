@@ -11,5 +11,4 @@ curl -X POST -d '{
      },
      "actions":[
      ]
-
-
+}' http://localhost:8080/stats/flowentry/add
