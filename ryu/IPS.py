@@ -1,6 +1,7 @@
 import requests
 import json
 import time
+import sys
 
 list_of_hosts = ["10.0.0.11",
                  "10.0.0.12",
@@ -14,7 +15,7 @@ list_of_hosts = ["10.0.0.11",
                 ]
 
 
-def get_flow_table_stats(switch):
+def get_flow_table_stats(switch, time_slice):
     # Get flow data for specific switch from the ryu rest API
     data = (requests.get(url='http://localhost:8080/stats/flow/'+str(switch)).json())['1']
     # Create dict to map ip to flow stats   
@@ -39,7 +40,7 @@ def get_flow_table_stats(switch):
         
         # Check if number of packets is smaller than threshold
         packets_restrict = packet_count <= 5
-        recent_packet = seconds_alive <= 3
+        recent_packet = seconds_alive <= time_slice
 
         if(packets_restrict and recent_packet):
             if(ip_src in ip_to_flow):
@@ -136,7 +137,8 @@ def block_host(host, table):
 
 def main():
     
-    flows = get_flow_table_stats(1)
+    time_slice = int(sys.argv[1])
+    flows = get_flow_table_stats(1,time_slice)
     
     horizontal = check_horizontal_scan(flows)
     vertical = check_vertical_scan(flows)
@@ -148,11 +150,11 @@ def main():
         to_del = {'match' : {'nw_src' : attack}}
         print(to_del)
         block_host(attack,0)
-        
+       
+    time.sleep(time_slice)
         
 if __name__ == '__main__':
     start_time = time.time()
     while True:
-        print("tick")
+        print("checking")
         main()
-        time.sleep(3.0)
