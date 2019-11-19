@@ -140,11 +140,11 @@ def main():
     time_slice = int(sys.argv[1])
     flows = get_flow_table_stats(1,time_slice)
     
-    horizontal = check_horizontal_scan(flows)
+    #horizontal = check_horizontal_scan(flows)
     vertical = check_vertical_scan(flows)
-    mixed = check_mix_scan(flows)
-    attackers = horizontal.union(vertical).union(mixed)
-    
+    #mixed = check_mix_scan(flows)
+    #attackers = horizontal.union(vertical).union(mixed)
+    attackers = vertical
     
     for attack in attackers:
         to_del = {'match' : {'nw_src' : attack}}
