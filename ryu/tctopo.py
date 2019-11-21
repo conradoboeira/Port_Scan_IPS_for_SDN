@@ -4,6 +4,8 @@ Call it with sudo mn --custom tctopo.py --topo tctopo --controller=remote,ip=127
 """
 
 from mininet.topo import Topo
+from mininet.cli import CLI
+from mininet.net import Mininet
 
 class TcTopo( Topo ):
     "TC testing topology."
@@ -23,7 +25,7 @@ class TcTopo( Topo ):
         host33 = self.addHost( 'h33', ip='10.0.0.33', mac='00:00:00:00:00:33' )
         host41 = self.addHost( 'h41', ip='10.0.0.41', mac='00:00:00:00:00:41' )
         host42 = self.addHost( 'h42', ip='10.0.0.42', mac='00:00:00:00:00:42' ) 
-        
+       
         # Add switches
         sw1 = self.addSwitch( 's1' )
         sw2 = self.addSwitch( 's2' )
@@ -43,6 +45,5 @@ class TcTopo( Topo ):
         self.addLink( sw2, sw4 )#s2-eth3 s4-eth1
         self.addLink( sw4, host41 )#s4-eth2
         self.addLink( sw4, host42 )#s4-eth3
-
+	
 topos = { 'tctopo': ( lambda: TcTopo() ) }
-
