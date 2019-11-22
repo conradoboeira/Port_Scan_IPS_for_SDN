@@ -12,6 +12,6 @@ Esse trabalho foi desenvolvido para a disciplina de Integradora 2 do curso de Ci
 ## Como executar:
   Dentro do diretório src estão os fontes necessários.
   Em um terminal inicie o ryu-manager com o comando:
-  '''bash
+  ```bash
   ryu-manager sw3.py ryu.app.ofctl_rest
-  '''
+  ```
